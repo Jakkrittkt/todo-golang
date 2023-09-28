@@ -1,0 +1,5 @@
+@base_url=http://localhost:8080
+@todo_id=5cdfb661-2cb6-4e81-aa6d-613e89f07228
+GET  {{base_url}}/todos/{{todo_id}}
+Content-Type: application/json
+
