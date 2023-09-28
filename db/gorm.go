@@ -17,7 +17,7 @@ func NewGorm(db *gorm.DB) *Gorm {
 }
 
 func (store *Gorm) New(todo *model.Todo) error {
-	return store.db.Create(todo).Error
+	return store.db.Create(&todo).Error
 }
 
 func (store *Gorm) GetById(todo *model.Todo) error {

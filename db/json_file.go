@@ -120,6 +120,7 @@ func (db *DbJsonFile) Update(todo *model.Todo) error {
 		return err
 	}
 
+	found := false
 	for index, value := range todos {
 		if todo.ID == value.ID {
 			todos[index].Title = todo.Title
@@ -127,9 +128,13 @@ func (db *DbJsonFile) Update(todo *model.Todo) error {
 			todos[index].Date = todo.Date
 			todos[index].Image = todo.Image
 			todos[index].Status = todo.Status
-
+			found = true
 			break
 		}
+	}
+
+	if !found {
+		return errors.New("record not found")
 	}
 
 	newData, err := json.MarshalIndent(todos, "", " ")

@@ -97,6 +97,12 @@ func (t *TodoHandler) FindById(c Context) {
 	todo.ID = id
 	err := t.todoRepo.GetById(&todo)
 	if err != nil {
+		if err.Error() == "record not found" {
+			c.JSON(http.StatusNotFound, map[string]interface{}{
+				"error": err.Error(),
+			})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"error": err.Error(),
 		})
@@ -132,7 +138,7 @@ func (t *TodoHandler) UpdateById(c Context) {
 
 	id, errParse := uuid.Parse(c.Param("id"))
 	if errParse != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"error": errParse.Error(),
 		})
 		return
@@ -153,6 +159,12 @@ func (t *TodoHandler) UpdateById(c Context) {
 	todo.Status = payload.Status
 	err := t.todoRepo.Update(&todo)
 	if err != nil {
+		if err.Error() == "record not found" {
+			c.JSON(http.StatusNotFound, map[string]interface{}{
+				"error": err.Error(),
+			})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"error": err.Error(),
 		})
